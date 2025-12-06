@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f4f9;
+    }
+
+    .header {
+      background: #4f46e5;
+      padding: 15px 25px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 {
+      margin: 0;
+    }
+
+    .btn-logout {
+      background: #ff4d4d;
+      border: none;
+      padding: 8px 16px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-attendance {
+      background: #22c55e;
+      border: none;
+      padding: 8px 16px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .container {
+      padding: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #4f46e5;
+    }
+
+    .card p {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .card button {
+      margin-top: 15px;
+      padding: 8px 14px;
+      border: none;
+      background: #4f46e5;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #installmentSection {
+      background: white;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    #installmentSection h3 {
+      color: #4f46e5;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      text-align: center;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    th {
+      background: #4f46e5;
+      color: white;
+    }
+
+    .receipt-btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h2 id="studentTitle">Student Dashboard</h2>
+
+    <div>
+      <button class="btn-attendance" onclick="viewAttendance()">View Attendance</button>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>Total Fees</h3>
+        <p id="totalFees">₹0</p>
+      </div>
+
+      <div class="card">
+        <h3>Payment Paid</h3>
+        <p id="paidFees">₹0</p>
+      </div>
+
+      <div class="card">
+        <h3>Payment Remaining</h3>
+        <p id="remainingFees">₹0</p>
+      </div>
+
+      <div class="card">
+        <h3>Batch</h3>
+        <p id="batchName">-</p>
+      </div>
+
+      <div class="card">
+        <h3>Receipt</h3>
+        <button onclick="downloadOverallReceipt()">Download Receipt</button>
+      </div>
+
+    </div>
+
+    <div id="installmentSection">
+      <h3>Installment Details</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Receipt</th>
+          </tr>
+        </thead>
+
+        <tbody id="installmentTableBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- JS FILE -->
+  <script src="Student dashboard.js"></script>
+
+</body>
+</html>

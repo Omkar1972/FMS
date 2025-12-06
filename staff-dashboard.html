@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staff Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .header {
+      background: #4f46e5;
+      color: white;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 { margin: 0; }
+
+    .right-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-small {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-small:hover { background: #1faa50; }
+
+    .btn-logout { background: #ff4d4d !important; }
+    .btn-logout:hover { background: #ff2f2f !important; }
+
+    .container {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      flex-direction: column;
+      gap: 40px;
+      flex: 1;
+      padding-top: 20px;
+    }
+
+    #addForm {
+      display: none;
+      margin-top: 20px;
+      width: 80%;
+    }
+
+    #addForm input, #addForm select, #addForm button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #addForm button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #studentsTable {
+      border-collapse: collapse;
+      width: 80%;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    #studentsTable th, #studentsTable td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    #studentsTable th {
+      background: #4f46e5;
+      color: white;
+    }
+
+    #studentsTable tr:hover {
+  background: #eae9eb;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <h2>Staff Dashboard</h2>
+
+    <div class="right-buttons">
+      <button class="btn-small" onclick="showAddForm()">Add Student</button>
+      <button class="btn-small btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Main Area -->
+  <div class="container">
+
+    <!-- Add Student Form -->
+    <div id="addForm">
+      <input type="number" id="totalFees" placeholder="Enter total fees">
+      <input type="number" id="paidFees" placeholder="Enter paid amount">
+      <select id="batchName">
+        <option value="Morning">Morning Batch</option>
+        <option value="Afternoon">Afternoon Batch</option>
+        <option value="Evening">Evening Batch</option>
+      </select>
+      <input type="text" id="installments" placeholder="Enter installment info">
+      <input type="text" id="receipt" placeholder="Enter receipt number">
+      <input type="text" id="attendance" placeholder="Enter attendance details">
+      <button onclick="addStudent()">Save Student</button>
+    </div>
+
+    <!-- Students Table -->
+    <table id="studentsTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>DOB</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- External JS File -->
+  <script src="staffDashboard.js"></script>
+
+</body>
+</html>

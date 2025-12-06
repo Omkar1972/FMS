@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff Registration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container card">
+    <h1>Staff Registration</h1>
+    <p class="muted">Register staff details</p>
+
+    <form id="staffForm" autocomplete="off">
+
+      <label>Full Name</label>
+      <input type="text" id="name" required>
+
+      <label>Email</label>
+      <input type="email" id="email" required>
+
+      <label>Password</label>
+      <input type="password" id="password" required>
+
+      <label>Confirm Password</label>
+      <input type="password" id="confirm" required>
+
+      <button type="submit">Register Staff</button>
+
+      <div id="msg"></div>
+    </form>
+
+  </div>
+
+  <script src="Registration staff.js"></script>
+</body>
+</html>
