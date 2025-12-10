@@ -109,7 +109,7 @@
     <h2>Staff Dashboard</h2>
 
     <div class="right-buttons">
-      <button class="btn-small" onclick="showAddForm()">Add Student</button>
+      <button class="btn-small" onclick="goToAddStudent()">Add Student</button>
       <button class="btn-small btn-logout" onclick="logout()">Logout</button>
     </div>
   </div>
@@ -136,9 +136,11 @@
     <table id="studentsTable">
       <thead>
         <tr>
+          <th>SR NO</th>
           <th>Name</th>
           <th>Email</th>
           <th>DOB</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody></tbody>

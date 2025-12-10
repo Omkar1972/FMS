@@ -1,44 +1,105 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyI7LSo3npXj3xaWreYAXc2BILkBz0EYMZNAZ63VYHKKIOD-rloT9dVRRHwk4kKbClV/exec";
 
-// show message
+// ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
+const SCRIPT_URL_LOGIN = "https://script.google.com/macros/s/AKfycbxIojHQrF6akwCzPoV-GJPGivVK_wFAGDS2PxGY8Qyw-340_N3ZD_Z6iLAoOOsKrbjO/exec"; 
+
+// Show message function
 function showMsg(text, type) {
-  document.getElementById("msg").innerHTML =
-    `<div class="msg ${type}">${text}</div>`;
+    const msgElement = document.getElementById("msg");
+    if (msgElement) {
+        msgElement.innerHTML = `<div class="msg ${type}">${text}</div>`;
+    }
 }
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("loginForm");
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+    if (loginForm) {
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  const body = new URLSearchParams({ email, password, action: "login" }).toString();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body
-    });
+            const body = new URLSearchParams({ email, password, action: "login" }).toString();
 
-    const result = await res.json();
+            try {
+                const res = await fetch(SCRIPT_URL_LOGIN, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body
+                });
 
-    if (result.status === "success") {
+                const result = await res.json();
 
-       // Save student email for dashboard
-      localStorage.setItem("studentEmail", email);
+                if (result.status === "success") {
 
-      showMsg("Login successful! Redirecting...", "success");
+                    // Save student email for dashboard
+                    localStorage.setItem("studentEmail", email);
 
-      setTimeout(() => {
-        window.location.href = "Student dashboard.html";
-      }, 1200);
+                    showMsg("Login successful! Redirecting...", "success");
 
-    } else {
-      showMsg("Invalid email or password!", "error");
+                    setTimeout(() => {
+                        window.location.href = "Student dashboard.html";
+                    }, 1200);
+
+                } else {
+                    showMsg("Invalid email or password!", "error");
+                }
+
+            } catch (error) {
+                console.error("Login Network Error:", error);
+                showMsg("Network error!", "error");
+            }
+        });
     }
-
-  } catch (error) {
-    showMsg("Network error!", "error");
-  }
 });
+
+
+
+
+
+
+// const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHQDhJ0WUYot_jdi7CH-9Fw0uIcutfp182qf1FBfwYP-8SzMFl_A3p0DSN3CI2YzmO/exec";
+
+// // show message
+// function showMsg(text, type) {
+//   document.getElementById("msg").innerHTML =
+//     `<div class="msg ${type}">${text}</div>`;
+// }
+
+// document.getElementById("loginForm").addEventListener("submit", async (e) => {
+//   e.preventDefault();
+
+//   const email = document.getElementById("email").value.trim();
+//   const password = document.getElementById("password").value.trim();
+
+//   const body = new URLSearchParams({ email, password, action: "login" }).toString();
+
+//   try {
+//     const res = await fetch(SCRIPT_URL, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//       body
+//     });
+
+//     const result = await res.json();
+
+//     if (result.status === "success") {
+
+//        // Save student email for dashboard
+//       localStorage.setItem("studentEmail", email);
+
+//       showMsg("Login successful! Redirecting...", "success");
+
+//       setTimeout(() => {
+//         window.location.href = "Student dashboard.html";
+//       }, 1200);
+
+//     } else {
+//       showMsg("Invalid email or password!", "error");
+//     }
+
+//   } catch (error) {
+//     showMsg("Network error!", "error");
+//   }
+// });

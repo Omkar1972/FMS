@@ -1,43 +1,105 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyI7LSo3npXj3xaWreYAXc2BILkBz0EYMZNAZ63VYHKKIOD-rloT9dVRRHwk4kKbClV/exec";
+
+// ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIojHQrF6akwCzPoV-GJPGivVK_wFAGDS2PxGY8Qyw-340_N3ZD_Z6iLAoOOsKrbjO/exec"; 
 
 function showMsg(text, type) {
-  document.getElementById("msg").innerHTML =
-    `<div class="msg ${type}">${text}</div>`;
+  const msgElement = document.getElementById("msg");
+  if (msgElement) {
+    msgElement.innerHTML = `<div class="msg ${type}">${text}</div>`;
+  }
 }
 
-document.getElementById("staffLoginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const staffLoginForm = document.getElementById("staffLoginForm");
+  if (staffLoginForm) {
+    staffLoginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
-  const pass = document.getElementById("password").value;
+      const email = document.getElementById("email").value.trim();
+      const pass = document.getElementById("password").value;
 
-  const body = new URLSearchParams({
-    email, password: pass, action: "staff-login"
-  }).toString();
+      const body = new URLSearchParams({
+        email, password: pass, action: "staff-login"
+      }).toString();
 
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+
+        const result = await res.json();
+
+        if (result.status === "success") {
+          localStorage.setItem("staffLogin", email);
+
+          showMsg("Login Success! Redirecting...", "success");
+
+          setTimeout(() => {
+            window.location.href = "staff-dashboard.html";
+          }, 1200);
+
+        } else {
+          // Display the error message from Apps Script if available, otherwise default
+          showMsg(result.message || "Invalid Staff Login!", "error");
+        }
+
+      } catch (err) {
+        console.error("Login Error:", err);
+        showMsg("Network Error!", "error");
+      }
     });
-
-    const result = await res.json();
-
-    if (result.status === "success") {
-      localStorage.setItem("staffLogin", email);
-
-      showMsg("Login Success! Redirecting...", "success");
-
-      setTimeout(() => {
-        window.location.href = "staff-dashboard.html";
-      }, 1200);
-
-    } else {
-      showMsg("Invalid Staff Login!", "error");
-    }
-
-  } catch (err) {
-    showMsg("Network Error!", "error");
   }
 });
+
+
+
+
+
+
+
+
+// const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykVVrRwAJNUFdGqRnKIFDVm-Q9O5Qrf_NawhkjnqnU-Ws12rTq6XLJi_Sz_xPee8hm/exec";
+
+// function showMsg(text, type) {
+//   document.getElementById("msg").innerHTML =
+//     `<div class="msg ${type}">${text}</div>`;
+// }
+
+// document.getElementById("staffLoginForm").addEventListener("submit", async (e) => {
+//   e.preventDefault();
+
+//   const email = document.getElementById("email").value.trim();
+//   const pass = document.getElementById("password").value;
+
+//   const body = new URLSearchParams({
+//     email, password: pass, action: "staff-login"
+//   }).toString();
+
+//   try {
+//     const res = await fetch(SCRIPT_URL, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//       body
+//     });
+
+//     const result = await res.json();
+
+//     if (result.status === "success") {
+//       localStorage.setItem("staffLogin", email);
+
+//       showMsg("Login Success! Redirecting...", "success");
+
+//       setTimeout(() => {
+//         window.location.href = "staff-dashboard.html";
+//       }, 1200);
+
+//     } else {
+//       showMsg("Invalid Staff Login!", "error");
+//     }
+
+//   } catch (err) {
+//     showMsg("Network Error!", "error");
+//   }
+// });

@@ -98,11 +98,15 @@
       border-collapse: collapse;
       width: 100%;
       text-align: center;
+      /* ⭐ ADDED: Ensure table width is clean */
+      table-layout: fixed; 
     }
 
     th, td {
       border: 1px solid #ddd;
       padding: 10px;
+      /* ⭐ ADDED: Ensure padding is applied */
+      vertical-align: middle; 
     }
 
     th {
@@ -119,6 +123,7 @@
       cursor: pointer;
     }
   </style>
+
 </head>
 
 <body>
