@@ -67,7 +67,7 @@ function addStudent() { // HTML button me onclick="addStudent()" hona chahiye
     btn.disabled = true;
 
     // Replace this SCRIPT_URL with your actual deployed URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIojHQrF6akwCzPoV-GJPGivVK_wFAGDS2PxGY8Qyw-340_N3ZD_Z6iLAoOOsKrbjO/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfQJjIA46zisX6WRE1ZDCor_3qo4q-VgMYb0opmJiRTP7kd06XRVzJ2rJZmswL1rOz/exec";
 
     fetch(SCRIPT_URL, {
         method: "POST",

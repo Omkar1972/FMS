@@ -1,6 +1,6 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
-const SCRIPT_URL_DASHBOARD = "https://script.google.com/macros/s/AKfycbxIojHQrF6akwCzPoV-GJPGivVK_wFAGDS2PxGY8Qyw-340_N3ZD_Z6iLAoOOsKrbjO/exec"; 
+const SCRIPT_URL_DASHBOARD = "https://script.google.com/macros/s/AKfycbzfQJjIA46zisX6WRE1ZDCor_3qo4q-VgMYb0opmJiRTP7kd06XRVzJ2rJZmswL1rOz/exec"; 
 
 // --- Core Dashboard Logic ---
 
