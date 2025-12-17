@@ -1,6 +1,6 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfQJjIA46zisX6WRE1ZDCor_3qo4q-VgMYb0opmJiRTP7kd06XRVzJ2rJZmswL1rOz/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec"; 
 
 function showMsg(text, type) {
   const msgElement = document.getElementById("msg");

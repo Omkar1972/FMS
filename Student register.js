@@ -1,7 +1,7 @@
 
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
-const SCRIPT_URL_REGISTER = "https://script.google.com/macros/s/AKfycbwAkU9jSgd-yQvyo6yg0EgZYlg_3dKY2RUIcv1Q7xKEuO-GbArxAg3OxAJXLU7SlrM/exec"; 
+const SCRIPT_URL_REGISTER = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec"; 
 
 
 // Show message function
@@ -70,34 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
