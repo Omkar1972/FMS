@@ -56,13 +56,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = await res.json();
 
                 if (result.status === "success") {
-                    showMsg("Student Registered Successfully! Redirecting...", "success");
-                    document.getElementById("regForm").reset();
+                showMsg("Student Registered Successfully! Redirecting...", "success");
+                document.getElementById("regForm").reset();
 
-                    setTimeout(() => {
-                        window.location.href = "Student Login.html";
-                    }, 1500);
-                } else {
+                setTimeout(() => {
+        // 1. Check karein ki pichla page (referrer) Staff Dashboard tha ya nahi
+        const cameFromStaff = document.referrer.toLowerCase().includes("staff-dashboard");
+        
+        // 2. LocalStorage se staff ki email check karein
+        const staffEmail = localStorage.getItem("staffLogin");
+
+        // ⭐ LOGIC: Agar staff logged in HAI AUR wo Staff Dashboard se aaya hai
+        if (staffEmail && cameFromStaff) {
+            window.location.href = "staff-dashboard.html";
+        } else {
+            // Baaki sabhi cases mein (Student khud register kare ya direct link ho)
+            window.location.href = "Student Login.html";
+        }
+        }, 1500);
+     } 
+             else {
                     // This handles the "Email already registered" error from Apps Script
                     showMsg(result.message || "Error saving data!", "error");
                 }
