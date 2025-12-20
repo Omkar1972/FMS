@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec";
 
 // 1. Page Load hote hi Email Box bharna
 window.onload = () => {
@@ -16,10 +16,12 @@ function addStudent() {
     const totalFees = Number(document.getElementById("totalFees").value);
     const paid = Number(document.getElementById("paymentPaid").value);
     const batch = document.getElementById("batch").value;
+    
+    // ⭐ Login teacher ki email
+    const staffEmail = localStorage.getItem("staffLoginEmail");
 
     if (!email || !totalFees) return alert("Email & Fees are required!");
 
-    // Automatic Installment Generation
     const remaining = totalFees - paid;
     let installments = [];
     let balance = remaining;
@@ -36,7 +38,6 @@ function addStudent() {
         balance -= amt;
     }
 
-    // Sheet me Update bhejna
     fetch(SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({
@@ -45,18 +46,96 @@ function addStudent() {
             totalFees: totalFees,
             paymentPaid: paid,
             batch: batch,
-            installments: installments
+            installments: installments,
+            addedBy: staffEmail // ⭐ Save teacher info
         })
     })
     .then(res => res.json())
     .then(res => {
         if (res.status === "success") {
-            alert("Data saved in Google Sheet!");
-            window.location.href = "staff-dashboard.html"; // Wapas dashboard
+            alert("Success!");
+            window.location.href = "staff-dashboard.html";
         }
-    })
-    .catch(err => console.log(err));
+    });
 }
+
+
+
+
+//Working add payments in student details page.........!!!!
+
+// const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec";
+
+// // 1. Page Load hote hi Email Box bharna
+// window.onload = () => {
+//     const params = new URLSearchParams(window.location.search);
+//     const email = params.get("email");
+//     if (email) {
+//         document.getElementById("targetEmail").value = decodeURIComponent(email);
+//         loadExistingData(email); // Optional: Purana data load karne ke liye
+//     }
+// };
+
+// // 2. Save Button Click Function
+// function addStudent() {
+//     const email = document.getElementById("targetEmail").value;
+//     const totalFees = Number(document.getElementById("totalFees").value);
+//     const paid = Number(document.getElementById("paymentPaid").value);
+//     const batch = document.getElementById("batch").value;
+
+//     if (!email || !totalFees) return alert("Email & Fees are required!");
+
+//     // Automatic Installment Generation
+//     const remaining = totalFees - paid;
+//     let installments = [];
+//     let balance = remaining;
+//     let date = new Date();
+
+//     while (balance > 0) {
+//         date.setMonth(date.getMonth() + 1);
+//         let amt = balance >= 7000 ? 7000 : balance;
+//         installments.push({
+//             amount: amt,
+//             date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-05`,
+//             status: "Pending"
+//         });
+//         balance -= amt;
+//     }
+
+//     // Sheet me Update bhejna
+//     fetch(SCRIPT_URL, {
+//         method: "POST",
+//         body: JSON.stringify({
+//             action: "addPaymentDetails",
+//             email: email,
+//             totalFees: totalFees,
+//             paymentPaid: paid,
+//             batch: batch,
+//             installments: installments
+//         })
+//     })
+//     .then(res => res.json())
+//     .then(res => {
+//         if (res.status === "success") {
+//             alert("Data saved in Google Sheet!");
+//             window.location.href = "staff-dashboard.html"; // Wapas dashboard
+//         }
+//     })
+//     .catch(err => console.log(err));
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ==========================================

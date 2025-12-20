@@ -1,7 +1,7 @@
 
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
-const SCRIPT_URL_REGISTER = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec"; 
+const SCRIPT_URL_REGISTER = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec"; 
 
 
 // Show message function
@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const pass = document.getElementById("password").value;
             const confirm = document.getElementById("confirm").value;
 
+            const staffEmail = localStorage.getItem("staffLogin");
+
             if (pass !== confirm) {
                 return showMsg("Passwords do not match!", "error");
             }
@@ -35,7 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 email, 
                 dob, 
                 password: pass, 
+                addedBy: staffEmail, // Staff ki email yahan ja rahi hai
                 action: "student-register" 
+                
             };
 
             // Use URLSearchParams for x-www-form-urlencoded

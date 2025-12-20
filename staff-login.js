@@ -1,6 +1,6 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec"; 
 
 function showMsg(text, type) {
   const msgElement = document.getElementById("msg");
@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (result.status === "success") {
           localStorage.setItem("staffLogin", email);
+          localStorage.setItem("staffName", result.name); // ⭐ Naam save karein
 
           showMsg("Login Success! Redirecting...", "success");
 

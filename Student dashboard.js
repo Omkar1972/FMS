@@ -1,6 +1,6 @@
 
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec";
+  "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec";
 
 const studentEmail = localStorage.getItem("studentEmail");
 
@@ -88,6 +88,9 @@ function logout() {
 function viewAttendance() {
   alert("Attendance coming soon");
 }
+
+
+
 
 
 

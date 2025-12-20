@@ -2,7 +2,7 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
 // NOTE: यह URL आपके Google Apps Script के doGet फ़ंक्शन को कॉल करता है
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwL2MChkj6BZjm-e92PYBiWSoKyDLTz6TJO40k_wQqXSNyr0AiDlquojInDaYffTWG7/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec"; 
 
 // // --- Data Fetching and Display ---
 
@@ -24,18 +24,31 @@ function fixDate(d) {
 
 // --- Initial Checks and Redirects ---
 document.addEventListener("DOMContentLoaded", () => {
-    // Optional: Redirect if not logged in
-    // const loggedInEmail = localStorage.getItem("staffLogin");
-    // if (!loggedInEmail) {
-    //     window.location.href = "staff-login.html";
-    // }
+    // 1. LocalStorage se naam uthao
+    const sName = localStorage.getItem("staffName");
+    const staffTitleElement = document.getElementById("staffTitle");
+
+    // 2. Agar naam hai toh title change karo (Student dashboard ki tarah)
+    if (sName && staffTitleElement) {
+        staffTitleElement.innerText = sName + " - Dashboard";
+    }
+
+    // 3. Baaki students load karne ka function
     loadStudents();
 });
+
+// Logout mein sab clear karein
+function logout() {
+    localStorage.removeItem("staffLogin");
+    localStorage.removeItem("staffName"); 
+    window.location.href = "index.html";
+}
 
 // --- Dashboard Actions ---
 
 function logout() {
     localStorage.removeItem("staffLogin"); 
+    localStorage.removeItem("staffName"); // ⭐ Naam bhi clear karein
     alert("Logged out!");
     window.location.href = "index.html";
 }
@@ -46,107 +59,92 @@ function goToAddStudent() {
 
 // ⭐ STUDENT DATA LOADING (Using the fixed fixDate function) ⭐
 function loadStudents() {
+    // 1. LocalStorage se login teacher ki email uthao
+    const staffEmail = localStorage.getItem("staffLogin"); 
+    console.log("Checking data for Staff:", staffEmail); // ⭐ Console mein check karein
+
+    if (!staffEmail) {
+        alert("Please Login Again!");
+        window.location.href = "index.html";
+        return;
+    }
+
     const tbody = document.querySelector("#studentsTable tbody");
-    if (!tbody) return;
-
-    // Loading message
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Loading student data...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5">Loading your students...</td></tr>';
     
-    // Fetch all students using a simple GET request
-    fetch(SCRIPT_URL) 
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! Status: ${res.status}`);
-            }
-            return res.json();
-        })
+    // 2. Filter ke liye query parameter bhejo
+    fetch(`${SCRIPT_URL}?staffEmail=${encodeURIComponent(staffEmail)}`) 
+        .then(res => res.json())
         .then(students => {
+            console.log("Students found in database:", students); // ⭐ Yahan data dikhna chahiye
             tbody.innerHTML = "";
-
-            if (Array.isArray(students) && students.length > 0) {
-                students.forEach((s, index) => {
-                    const row = document.createElement("tr");
-                    
-                    // ⭐ Row clickable (Email pass karna)
-                    row.style.cursor = "pointer";
-                    row.onclick = () => {
-                        // Email ko URL safe banane ke liye encodeURIComponent ka istemal
-                        window.location.href = `student details.html?email=${encodeURIComponent(s.email)}`;
-                    };
-
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${s.name || 'N/A'}</td>
-                        <td>${s.email || 'N/A'}</td>
-                        <td>${fixDate(s.dob)}</td> 
-                        
-                        <td>
-                            <button 
-                                style="
-                                    background:#ff4d4d;
-                                    color:white;
-                                    border:none;
-                                    padding:6px 12px;
-                                    border-radius:5px;
-                                    cursor:pointer;
-                                "
-                                // Delete button click पर event propagation रोकें
-                                onclick="deleteStudent('${s.email}'); event.stopPropagation();">
-                                Delete
-                            </button>
-                        </td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                });
-            } else {
-                // If students array is empty
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">No students found in the system.</td></tr>';
+            if (students.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">No students added by you yet.</td></tr>';
+                return;
             }
 
-            const studentsTable = document.getElementById("studentsTable");
-            if (studentsTable) {
-                studentsTable.style.display = "table";
-            }
+            students.forEach((s, index) => {
+                const row = document.createElement("tr");
+                row.onclick = () => {
+                    window.location.href = `student details.html?email=${encodeURIComponent(s.email)}`;
+                };
+                    // Console ke hisaab se data nikal rahe hain
+                const name = s.name || "N/A";
+                const email = s.email || "N/A";
+                const dob = s.dob || "Morning";
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${name}</td>
+                    <td>${email}</td>
+                    <td>${dob}</td>
+                    <td>
+                        <button onclick="event.stopPropagation(); deleteStudent('${email}');" 
+                                style="background:#ff4d4d; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
+                            Delete
+                        </button>
+                    </td>
+                `;
+
+                // Row click karne par details page par bheje
+                row.style.cursor = "pointer";
+                row.onclick = () => {
+                    window.location.href = `student details.html?email=${encodeURIComponent(email)}`;
+                };
+
+                tbody.appendChild(row);
+            });
         })
         .catch(err => {
-            console.error("Error fetching students:", err);
-            const tbody = document.querySelector("#studentsTable tbody");
-            if(tbody) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: red;">Failed to load data. Check server connection or Apps Script URL.</td></tr>';
-            }
+            console.error("Fetch Error:", err);
+            tbody.innerHTML = '<tr><td colspan="5">Data loading error. Check Console.</td></tr>';
         });
 }
 
-// ⭐ DELETE STUDENT
-function deleteStudent(email) {
-    if (!confirm("Do you really want to delete this student?")) return;
 
-    fetch(
-        SCRIPT_URL,
-        {
-            method: "POST",
-            body: JSON.stringify({
-                action: "delete",
-                email: email,
-            }),
-            headers: { "Content-Type": "application/json" },
-        }
-    )
-    .then((res) => res.json())
-    .then((result) => {
-        if (result.status === "success") {
-            alert("Student deleted successfully!");
-            loadStudents(); // Refresh the list
-        } else {
-            alert("Failed to delete student: " + result.message);
-        }
-    })
-    .catch((err) => {
-        alert("Network Error during deletion.");
-        console.error(err);
-    });
+
+
+function deleteStudent(email) {
+    if (!confirm("Are you sure?")) return;
+
+    // Delete ke liye URLSearchParams use karein taaki CORS issue na aaye
+    const params = new URLSearchParams();
+    params.append("action", "delete");
+    params.append("email", email);
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // Apps Script ke liye safe mode
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString()
+    }).then(() => {
+        alert("Student deleted successfully!");
+        loadStudents();
+    }).catch(err => alert("Error deleting student"));
 }
+
+
+
 
 
 
