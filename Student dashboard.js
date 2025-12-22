@@ -2,7 +2,7 @@
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec";
 
-const studentEmail = localStorage.getItem("studentEmail");
+const studentEmail = sessionStorage.getItem("studentEmail");
 
 if (!studentEmail) {
   window.location.href = "Student Login.html";
@@ -81,7 +81,7 @@ fetch(`${SCRIPT_URL}?type=getStudent&email=${encodeURIComponent(studentEmail)}`)
   });
 
 function logout() {
-  localStorage.removeItem("studentEmail");
+  sessionStorage.removeItem("studentEmail");
   window.location.href = "index.html";
 }
 

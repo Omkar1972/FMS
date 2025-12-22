@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (result.status === "success") {
 
                     // Save student email for dashboard
-                    localStorage.setItem("studentEmail", email.trim().toLowerCase());
+                  sessionStorage.setItem("studentEmail", email.trim().toLowerCase());
 
                     showMsg("Login successful! Redirecting...", "success");
 

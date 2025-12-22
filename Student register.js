@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const pass = document.getElementById("password").value;
             const confirm = document.getElementById("confirm").value;
 
-            const staffEmail = localStorage.getItem("staffLogin");
+            const staffEmail =sessionStorage.getItem("staffLogin");
 
             if (pass !== confirm) {
                 return showMsg("Passwords do not match!", "error");
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const cameFromStaff = document.referrer.toLowerCase().includes("staff-dashboard");
         
         // 2. LocalStorage se staff ki email check karein
-        const staffEmail = localStorage.getItem("staffLogin");
+        const staffEmail =sessionStorage.getItem("staffLogin");
 
         // ⭐ LOGIC: Agar staff logged in HAI AUR wo Staff Dashboard se aaya hai
         if (staffEmail && cameFromStaff) {

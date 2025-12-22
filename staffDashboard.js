@@ -24,8 +24,8 @@ function fixDate(d) {
 
 // --- Initial Checks and Redirects ---
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. LocalStorage se naam uthao
-    const sName = localStorage.getItem("staffName");
+    // 1. sessionStorage se naam uthao
+    const sName =  sessionStorage.getItem("staffName");
     const staffTitleElement = document.getElementById("staffTitle");
 
     // 2. Agar naam hai toh title change karo (Student dashboard ki tarah)
@@ -39,8 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Logout mein sab clear karein
 function logout() {
-    localStorage.removeItem("staffLogin");
-    localStorage.removeItem("staffName"); 
+    sessionStorage.clear(); // ⭐ Pure session ko saaf karein
     window.location.href = "index.html";
 }
 
@@ -59,8 +58,8 @@ function goToAddStudent() {
 
 // ⭐ STUDENT DATA LOADING (Using the fixed fixDate function) ⭐
 function loadStudents() {
-    // 1. LocalStorage se login teacher ki email uthao
-    const staffEmail = localStorage.getItem("staffLogin"); 
+    // 1. sessionStorage se login teacher ki email uthao
+    const staffEmail = sessionStorage.getItem("staffLogin");
     console.log("Checking data for Staff:", staffEmail); // ⭐ Console mein check karein
 
     if (!staffEmail) {
@@ -124,26 +123,36 @@ function loadStudents() {
 
 
 
-function deleteStudent(email) {
+async function deleteStudent(email) {
     if (!confirm("Are you sure?")) return;
 
-    // Delete ke liye URLSearchParams use karein taaki CORS issue na aaye
-    const params = new URLSearchParams();
-    params.append("action", "delete");
-    params.append("email", email);
+    const staffEmail = sessionStorage.getItem("staffLogin"); // ⭐ Current teacher ki email
 
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors", // Apps Script ke liye safe mode
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString()
-    }).then(() => {
-        alert("Student deleted successfully!");
-        loadStudents();
-    }).catch(err => alert("Error deleting student"));
+    const body = new URLSearchParams({
+        action: "delete",
+        email: email
+    }).toString();
+
+    try {
+        const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: body
+        });
+
+        const result = await res.json();
+
+        if (result.status === "success") {
+            alert("Student deleted successfully!");
+            // ⭐ Dubara load karein, ye automatically sirf isi teacher ka data layega
+            loadStudents(); 
+        }
+    } catch (err) {
+        console.error("Delete Error:", err);
+        // Agar no-cors ki wajah se error aaye toh bhi list refresh kar dein
+        loadStudents(); 
+    }
 }
-
-
 
 
 

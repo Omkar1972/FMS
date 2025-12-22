@@ -32,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await res.json();
 
         if (result.status === "success") {
-          localStorage.setItem("staffLogin", email);
-          localStorage.setItem("staffName", result.name); // ⭐ Naam save karein
+         sessionStorage.setItem("staffLogin", email);
+         sessionStorage.setItem("staffName", result.name); // ⭐ Naam save karein
 
           showMsg("Login Success! Redirecting...", "success");
 
