@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Installments</title>
+    <style>
+        body { font-family: Arial; background: #f4f4f9; padding: 20px; }
+        .card { background: white; max-width: 700px; margin: auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #4f46e5; color: white; }
+        .status-paid { color: green; font-weight: bold; }
+        .status-pending { color: orange; font-weight: bold; }
+        .back-btn { background: #6b7280; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <button class="back-btn" onclick="history.back()">← Back</button>
+        <h2>Installment Details</h2>
+        <p id="studentDisplay" style="font-weight: bold; color: #4f46e5;"></p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="insTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec";
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+
+        window.onload = () => {
+            if (!email) return alert("No email found!");
+            document.getElementById("studentDisplay").innerText = "Student: " + email;
+            loadInstallments();
+        };
+
+        async function loadInstallments() {
+            const tbody = document.getElementById("insTableBody");
+            tbody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
+
+            const res = await fetch(`${SCRIPT_URL}?type=getInstallmentsOnly&email=${encodeURIComponent(email)}`);
+            const data = await res.json();
+
+            if (data.status === "success") {
+                tbody.innerHTML = "";
+                data.installments.forEach((ins, index) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>₹${ins.amount}</td>
+                            <td>${ins.date}</td>
+                            <td class="status-${ins.status.toLowerCase()}">${ins.status}</td>
+                            <td>
+                                <select onchange="updateStatus(${index}, this.value)">
+                                    <option value="">Update</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Unpaid">Unpaid</option>
+                                    <option value="Rejected">Reject</option>
+                                </select>
+                            </td>
+                        </tr>`;
+                });
+            }
+        }
+
+        async function updateStatus(index, newStatus) {
+            if (!newStatus) return;
+            const res = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "updateInstallmentStatus",
+                    email: email,
+                    installmentIndex: index,
+                    newStatus: newStatus
+                })
+            });
+            const result = await res.json();
+            if (result.status === "success") {
+                alert("Status Updated!");
+                loadInstallments();
+            }
+        }
+    </script>
+</body>
+</html>

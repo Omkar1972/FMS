@@ -59,6 +59,15 @@ function addStudent() {
     });
 }
 
+function goToInstallments() {
+    const email = document.getElementById("targetEmail").value;
+    if (!email) return alert("Email missing!");
+    // Naye page par email bhej rahe hain
+    window.location.href = `view-installments.html?email=${encodeURIComponent(email)}`;
+}
+
+
+
 
 
 
