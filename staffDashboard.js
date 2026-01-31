@@ -2,7 +2,7 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
 // NOTE: यह URL आपके Google Apps Script के doGet फ़ंक्शन को कॉल करता है
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRs416jWol82HMr9Bu2Iz9_BPgA5SPUvsKurvuborsX3R8ie8sPMszaiGWKP9tuOug/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHZJ3xuf0QZVKVJLKxOPIYe7kDXcIVJY717lLGzn4YHoMc3Fzb4BWK_5sDU77VhqWY/exec"; 
 
 // // --- Data Fetching and Display ---
 

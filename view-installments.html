@@ -34,7 +34,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRs416jWol82HMr9Bu2Iz9_BPgA5SPUvsKurvuborsX3R8ie8sPMszaiGWKP9tuOug/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHZJ3xuf0QZVKVJLKxOPIYe7kDXcIVJY717lLGzn4YHoMc3Fzb4BWK_5sDU77VhqWY/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const email = urlParams.get('email');
 
@@ -81,23 +81,36 @@
     }
 }
 
-        async function updateStatus(index, newStatus) {
-            if (!newStatus) return;
-            const res = await fetch(SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({
-                    action: "updateInstallmentStatus",
-                    email: email,
-                    installmentIndex: index,
-                    newStatus: newStatus
-                })
-            });
-            const result = await res.json();
-            if (result.status === "success") {
-                alert("Status Updated!");
-                loadInstallments();
-            }
-        }
+    async function updateStatus(index, newStatus) {
+    if (!newStatus) return;
+    
+    // UI par loading dikhane ke liye
+    console.log("Updating status for:", email, "Index:", index, "to:", newStatus);
+
+    try {
+        const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors", // Google Apps Script ke liye zaruri hai
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "updateInstallmentStatus",
+                email: email,
+                installmentIndex: index,
+                newStatus: newStatus
+            })
+        });
+
+        // Kyunki mode 'no-cors' hai, response check karne ke liye 2 second baad refresh karein
+        alert("Request sent! Updating fees...");
+        setTimeout(() => {
+            loadInstallments(); // Table refresh karein
+        }, 2000);
+
+    } catch (error) {
+        console.error("Update Error:", error);
+        alert("Failed to update status.");
+    }
+}
     </script>
 </body>
 </html>
