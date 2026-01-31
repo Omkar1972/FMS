@@ -34,7 +34,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRs416jWol82HMr9Bu2Iz9_BPgA5SPUvsKurvuborsX3R8ie8sPMszaiGWKP9tuOug/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const email = urlParams.get('email');
 
@@ -44,33 +44,42 @@
             loadInstallments();
         };
 
-        async function loadInstallments() {
-            const tbody = document.getElementById("insTableBody");
-            tbody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
+   async function loadInstallments() {
+    const tbody = document.getElementById("insTableBody");
+    tbody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
 
-            const res = await fetch(`${SCRIPT_URL}?type=getInstallmentsOnly&email=${encodeURIComponent(email)}`);
-            const data = await res.json();
+    try {
+        const res = await fetch(`${SCRIPT_URL}?type=getInstallmentsOnly&email=${encodeURIComponent(email)}`);
+        const data = await res.json();
 
-            if (data.status === "success") {
-                tbody.innerHTML = "";
-                data.installments.forEach((ins, index) => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>₹${ins.amount}</td>
-                            <td>${ins.date}</td>
-                            <td class="status-${ins.status.toLowerCase()}">${ins.status}</td>
-                            <td>
-                                <select onchange="updateStatus(${index}, this.value)">
-                                    <option value="">Update</option>
-                                    <option value="Paid">Paid</option>
-                                    <option value="Unpaid">Unpaid</option>
-                                    <option value="Rejected">Reject</option>
-                                </select>
-                            </td>
-                        </tr>`;
-                });
-            }
+        if (data.status === "success" && data.installments.length > 0) {
+            tbody.innerHTML = "";
+            data.installments.forEach((ins, index) => {
+                // Status ke hisaab se color class
+                const statusClass = ins.status.toLowerCase() === 'paid' ? 'status-paid' : 'status-pending';
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>₹${ins.amount}</td>
+                        <td>${ins.date}</td>
+                        <td class="${statusClass}">${ins.status}</td>
+                        <td>
+                            <select onchange="updateStatus(${index}, this.value)">
+                                <option value="">Action</option>
+                                <option value="Paid">Mark Paid</option>
+                                <option value="Pending">Mark Pending</option>
+                                <option value="Rejected">Reject</option>
+                            </select>
+                        </td>
+                    </tr>`;
+            });
+        } else {
+            tbody.innerHTML = "<tr><td colspan='4'>No installments found for this student.</td></tr>";
         }
+    } catch (error) {
+        tbody.innerHTML = "<tr><td colspan='4'>Error loading data!</td></tr>";
+    }
+}
 
         async function updateStatus(index, newStatus) {
             if (!newStatus) return;

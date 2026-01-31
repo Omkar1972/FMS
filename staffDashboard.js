@@ -2,7 +2,7 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
 // NOTE: यह URL आपके Google Apps Script के doGet फ़ंक्शन को कॉल करता है
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwU6dde8kjiByDW2MJ_jAVwxPXkRcCZPNq540EllCAxbw_VGnY0hI-3QhEtdnetyBfR/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRs416jWol82HMr9Bu2Iz9_BPgA5SPUvsKurvuborsX3R8ie8sPMszaiGWKP9tuOug/exec"; 
 
 // // --- Data Fetching and Display ---
 
@@ -77,12 +77,17 @@ function loadStudents() {
         .then(students => {
             console.log("Students found in database:", students); // ⭐ Yahan data dikhna chahiye
             tbody.innerHTML = "";
-            if (students.length === 0) {
+
+            // ⭐ FIX: students array data.students ke andar hai
+            const studentList = students.students || [];
+
+
+            if (studentList.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5">No students added by you yet.</td></tr>';
                 return;
             }
 
-            students.forEach((s, index) => {
+            studentList.forEach((s, index) => {
                 const row = document.createElement("tr");
                 row.onclick = () => {
                     window.location.href = `student details.html?email=${encodeURIComponent(s.email)}`;
@@ -90,7 +95,8 @@ function loadStudents() {
                     // Console ke hisaab se data nikal rahe hain
                 const name = s.name || "N/A";
                 const email = s.email || "N/A";
-                const dob = s.dob || "Morning";
+               // fixDate function ka use karke date ko format karein
+                const dob = s.dob ? fixDate(s.dob) : "N/A";
 
                 row.innerHTML = `
                     <td>${index + 1}</td>
