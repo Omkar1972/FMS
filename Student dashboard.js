@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyHZJ3xuf0QZVKVJLKxOPIYe7kDXcIVJY717lLGzn4YHoMc3Fzb4BWK_5sDU77VhqWY/exec";
+  "https://script.google.com/macros/s/AKfycbxjDlQJPGFEwaQEPkqWBfZQgvl6gPxMJzBQEBcnxEY6ubYSZvaig2gqsY2T8fepS7iq/exec";
 
 const studentEmail = sessionStorage.getItem("studentEmail");
 

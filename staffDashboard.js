@@ -2,7 +2,7 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
 // NOTE: यह URL आपके Google Apps Script के doGet फ़ंक्शन को कॉल करता है
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHZJ3xuf0QZVKVJLKxOPIYe7kDXcIVJY717lLGzn4YHoMc3Fzb4BWK_5sDU77VhqWY/exec"; 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjDlQJPGFEwaQEPkqWBfZQgvl6gPxMJzBQEBcnxEY6ubYSZvaig2gqsY2T8fepS7iq/exec"; 
 
 // // --- Data Fetching and Display ---
 
@@ -160,6 +160,37 @@ async function deleteStudent(email) {
     }
 }
 
+
+async function onPaidClick(studentEmail, index) {
+  // 1. Pehle OTP bhejwaein
+  const res = await fetch(SCRIPT_URL + "?type=sendOTP&email=" + studentEmail);
+  alert("OTP Admin ko bhej diya gaya hai. Unse lekar fill karein.");
+
+  // 2. Staff se OTP maangein
+  const staffInputOtp = prompt("Admin ko bheja gaya 6-digit OTP yahan dalein:");
+
+  if (staffInputOtp) {
+    // 3. OTP ke saath status update request bhejein
+    const updateRes = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "updateInstallmentStatus",
+        email: studentEmail,
+        installmentIndex: index,
+        newStatus: "Paid",
+        userOtp: staffInputOtp // OTP bhej rahe hain
+      })
+    });
+    
+    const result = await updateRes.json();
+    if (result.status === "success") {
+      alert("Payment Verified & Updated!");
+      location.reload();
+    } else {
+      alert(result.message);
+    }
+  }
+}
 
 
 

@@ -1,6 +1,6 @@
 
 // ⭐ REPLACE THIS WITH YOUR DEPLOYED GOOGLE APPS SCRIPT URL ⭐
-const SCRIPT_URL_LOGIN = "https://script.google.com/macros/s/AKfycbyHZJ3xuf0QZVKVJLKxOPIYe7kDXcIVJY717lLGzn4YHoMc3Fzb4BWK_5sDU77VhqWY/exec"; 
+const SCRIPT_URL_LOGIN = "https://script.google.com/macros/s/AKfycbxjDlQJPGFEwaQEPkqWBfZQgvl6gPxMJzBQEBcnxEY6ubYSZvaig2gqsY2T8fepS7iq/exec"; 
 
 // Show message function
 function showMsg(text, type) {
